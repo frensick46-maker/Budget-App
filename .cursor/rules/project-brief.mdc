@@ -14,7 +14,7 @@ alwaysApply: true
 - Work in small steps; after each step, update this brief with progress.
 
 # Current Status
-- Latest step: Zeroed default amounts for new users
+- Latest step: Reset amounts to zero on sign-out
 - Next step: Decide next feature for budgeting flow
 
 # Decisions

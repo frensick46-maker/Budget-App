@@ -59,6 +59,36 @@ const normalizeItem = (item: Partial<IncomeItem>): IncomeItem => ({
     `${item.amountBaseUsd ?? 0}`,
 })
 
+const DEFAULT_INCOMES: IncomeItem[] = [
+  {
+    id: 'income-1',
+    name: 'Paycheck',
+    amountBaseUsd: 0,
+    amountInput: '0',
+  },
+  {
+    id: 'income-2',
+    name: 'Side gig',
+    amountBaseUsd: 0,
+    amountInput: '0',
+  },
+]
+
+const DEFAULT_FIXED_EXPENSES: IncomeItem[] = [
+  {
+    id: 'expense-1',
+    name: 'Rent',
+    amountBaseUsd: 0,
+    amountInput: '0',
+  },
+  {
+    id: 'expense-2',
+    name: 'Utilities',
+    amountBaseUsd: 0,
+    amountInput: '0',
+  },
+]
+
 const normalizeBonus = (entry?: Partial<BonusEntry>): BonusEntry => ({
   amountBaseUsd: entry?.amountBaseUsd ?? 0,
   amountInput: entry?.amountInput ?? `${entry?.amountBaseUsd ?? 0}`,
@@ -84,37 +114,13 @@ function App() {
   const storedState = loadStoredState()
   const [incomes, setIncomes] = useState<IncomeItem[]>(
     () =>
-      storedState?.incomes?.map((item) => normalizeItem(item)) ?? [
-        {
-          id: 'income-1',
-          name: 'Paycheck',
-          amountBaseUsd: 0,
-          amountInput: '0',
-        },
-        {
-          id: 'income-2',
-          name: 'Side gig',
-          amountBaseUsd: 0,
-          amountInput: '0',
-        },
-      ]
+      storedState?.incomes?.map((item) => normalizeItem(item)) ??
+      DEFAULT_INCOMES
   )
   const [fixedExpenses, setFixedExpenses] = useState<IncomeItem[]>(
     () =>
-      storedState?.fixedExpenses?.map((item) => normalizeItem(item)) ?? [
-        {
-          id: 'expense-1',
-          name: 'Rent',
-          amountBaseUsd: 0,
-          amountInput: '0',
-        },
-        {
-          id: 'expense-2',
-          name: 'Utilities',
-          amountBaseUsd: 0,
-          amountInput: '0',
-        },
-      ]
+      storedState?.fixedExpenses?.map((item) => normalizeItem(item)) ??
+      DEFAULT_FIXED_EXPENSES
   )
   const [period, setPeriod] = useState<'monthly' | 'weekly' | 'yearly'>(
     storedState?.period ?? 'monthly'
@@ -154,6 +160,7 @@ function App() {
   const [syncReady, setSyncReady] = useState(false)
   const pendingSyncRef = useRef<number | null>(null)
   const skipNextSyncRef = useRef(false)
+  const previousSessionRef = useRef<Session | null>(null)
 
   const currencies = useMemo(
     () => [
@@ -254,6 +261,17 @@ function App() {
     ]
   )
 
+  const resetToDefaults = useCallback(() => {
+    skipNextSyncRef.current = true
+    setIncomes(DEFAULT_INCOMES.map((item) => ({ ...item })))
+    setFixedExpenses(DEFAULT_FIXED_EXPENSES.map((item) => ({ ...item })))
+    setMonthlyBonuses({})
+    setVariableExpensesByMonth({})
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(STORAGE_KEY)
+    }
+  }, [])
+
   const applyStoredState = useCallback((state?: StoredState | null) => {
     if (!state) {
       return
@@ -319,6 +337,14 @@ function App() {
       subscription.unsubscribe()
     }
   }, [])
+
+  useEffect(() => {
+    const wasSignedIn = Boolean(previousSessionRef.current)
+    previousSessionRef.current = session
+    if (wasSignedIn && !session) {
+      resetToDefaults()
+    }
+  }, [session, resetToDefaults])
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
