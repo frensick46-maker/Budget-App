@@ -14,7 +14,7 @@ alwaysApply: true
 - Work in small steps; after each step, update this brief with progress.
 
 # Current Status
-- Latest step: Updated income tile subtext copy
+- Latest step: Enabled Enter key for sign-in and reset forms
 - Next step: Decide next feature for budgeting flow
 
 # Decisions

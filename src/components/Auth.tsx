@@ -138,7 +138,15 @@ function Auth({
     return (
       <div className="auth-panel">
         <p className="auth-title">{t('setNewPassword')}</p>
-        <div className="auth-form">
+        <form
+          className="auth-form"
+          onSubmit={(event) => {
+            event.preventDefault()
+            if (!working && newPassword && confirmPassword) {
+              void handlePasswordUpdate()
+            }
+          }}
+        >
           <input
             className="auth-input"
             type="password"
@@ -158,7 +166,7 @@ function Auth({
           <div className="auth-actions">
             <button
               className="primary-button"
-              type="button"
+              type="submit"
               onClick={handlePasswordUpdate}
               disabled={working || !newPassword || !confirmPassword}
             >
@@ -175,7 +183,7 @@ function Auth({
           </div>
           {message ? <p className="auth-success">{message}</p> : null}
           {authError ? <p className="auth-error">{authError}</p> : null}
-        </div>
+        </form>
       </div>
     )
   }
@@ -216,7 +224,15 @@ function Auth({
         </button>
       </div>
       {showForm ? (
-        <div className="auth-form">
+        <form
+          className="auth-form"
+          onSubmit={(event) => {
+            event.preventDefault()
+            if (!working && email && password) {
+              void handleSignIn()
+            }
+          }}
+        >
           <input
             className="auth-input"
             type="email"
@@ -236,8 +252,7 @@ function Auth({
           <div className="auth-actions">
             <button
               className="primary-button"
-              type="button"
-              onClick={handleSignIn}
+              type="submit"
               disabled={working || !email || !password}
             >
               {t('signIn')}
@@ -253,7 +268,7 @@ function Auth({
           </div>
           {message ? <p className="auth-success">{message}</p> : null}
           {authError ? <p className="auth-error">{authError}</p> : null}
-        </div>
+        </form>
       ) : (
         <p className="auth-meta">Sign in to keep your budget synced.</p>
       )}
