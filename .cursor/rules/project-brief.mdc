@@ -14,7 +14,7 @@ alwaysApply: true
 - Work in small steps; after each step, update this brief with progress.
 
 # Current Status
-- Latest step: Added password reset screen
+- Latest step: Added English/Spanish language toggle
 - Next step: Decide next feature for budgeting flow
 
 # Decisions

@@ -12,19 +12,20 @@ type AuthProps = {
   syncError: string | null
   isRecovery: boolean
   onRecoveryComplete: () => void
+  t: (key: string) => string
 }
 
-const statusLabel = (status: SyncStatus) => {
+const statusLabel = (status: SyncStatus, t: (key: string) => string) => {
   if (status === 'loading') {
-    return 'Loading cloud data...'
+    return t('statusLoading')
   }
   if (status === 'saving') {
-    return 'Saving changes...'
+    return t('statusSaving')
   }
   if (status === 'error') {
-    return 'Sync error'
+    return t('statusError')
   }
-  return 'All changes saved'
+  return t('statusSaved')
 }
 
 function Auth({
@@ -35,6 +36,7 @@ function Auth({
   syncError,
   isRecovery,
   onRecoveryComplete,
+  t,
 }: AuthProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -70,7 +72,7 @@ function Auth({
     if (error) {
       setAuthError(error.message)
     } else {
-      setMessage('Check your email to confirm the account.')
+      setMessage(t('checkEmailConfirm'))
     }
     setWorking(false)
   }
@@ -91,12 +93,12 @@ function Auth({
     setMessage('')
     setAuthError('')
     if (newPassword.length < 6) {
-      setAuthError('Password must be at least 6 characters.')
+      setAuthError(t('passwordTooShort'))
       setWorking(false)
       return
     }
     if (newPassword !== confirmPassword) {
-      setAuthError('Passwords do not match.')
+      setAuthError(t('passwordMismatch'))
       setWorking(false)
       return
     }
@@ -107,7 +109,7 @@ function Auth({
     if (error) {
       setAuthError(error.message)
     } else {
-      setMessage('Password updated.')
+      setMessage(t('passwordUpdated'))
       setNewPassword('')
       setConfirmPassword('')
       onRecoveryComplete()
@@ -118,11 +120,8 @@ function Auth({
   if (!isConfigured) {
     return (
       <div className="auth-panel">
-        <p className="auth-title">Cloud sync disabled</p>
-        <p className="auth-meta">
-          Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env to enable
-          sign-in.
-        </p>
+        <p className="auth-title">{t('cloudSyncDisabled')}</p>
+        <p className="auth-meta">{t('cloudSyncDisabledHint')}</p>
       </div>
     )
   }
@@ -130,7 +129,7 @@ function Auth({
   if (loading) {
     return (
       <div className="auth-panel">
-        <p className="auth-title">Checking session...</p>
+        <p className="auth-title">{t('checkingSession')}</p>
       </div>
     )
   }
@@ -138,12 +137,12 @@ function Auth({
   if (isRecovery) {
     return (
       <div className="auth-panel">
-        <p className="auth-title">Set a new password</p>
+        <p className="auth-title">{t('setNewPassword')}</p>
         <div className="auth-form">
           <input
             className="auth-input"
             type="password"
-            placeholder="New password"
+            placeholder={t('newPassword')}
             value={newPassword}
             onChange={(event) => setNewPassword(event.target.value)}
             autoComplete="new-password"
@@ -151,7 +150,7 @@ function Auth({
           <input
             className="auth-input"
             type="password"
-            placeholder="Confirm new password"
+            placeholder={t('confirmNewPassword')}
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
             autoComplete="new-password"
@@ -163,7 +162,7 @@ function Auth({
               onClick={handlePasswordUpdate}
               disabled={working || !newPassword || !confirmPassword}
             >
-              Set password
+              {t('setPassword')}
             </button>
             <button
               className="ghost-button"
@@ -171,7 +170,7 @@ function Auth({
               onClick={handleSignOut}
               disabled={working}
             >
-              Sign out
+              {t('signOut')}
             </button>
           </div>
           {message ? <p className="auth-success">{message}</p> : null}
@@ -184,9 +183,9 @@ function Auth({
   if (session) {
     return (
       <div className="auth-panel">
-        <p className="auth-title">Signed in</p>
+        <p className="auth-title">{t('signedIn')}</p>
         <p className="auth-meta">{session.user.email}</p>
-        <p className="auth-meta">{statusLabel(syncStatus)}</p>
+        <p className="auth-meta">{statusLabel(syncStatus, t)}</p>
         {syncStatus === 'error' && syncError ? (
           <p className="auth-error">{syncError}</p>
         ) : null}
@@ -197,7 +196,7 @@ function Auth({
           onClick={handleSignOut}
           disabled={working}
         >
-          Sign out
+          {t('signOut')}
         </button>
       </div>
     )
@@ -206,14 +205,14 @@ function Auth({
   return (
     <div className="auth-panel">
       <div className="auth-toggle-row">
-        <p className="auth-title">Sign in to sync</p>
+        <p className="auth-title">{t('signInToSync')}</p>
         <button
           className="ghost-button small"
           type="button"
           onClick={() => setShowForm((prev) => !prev)}
           disabled={working}
         >
-          {showForm ? 'Hide' : 'Sign in'}
+          {showForm ? t('hide') : t('signIn')}
         </button>
       </div>
       {showForm ? (
@@ -221,7 +220,7 @@ function Auth({
           <input
             className="auth-input"
             type="email"
-            placeholder="Email"
+            placeholder={t('email')}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
@@ -229,7 +228,7 @@ function Auth({
           <input
             className="auth-input"
             type="password"
-            placeholder="Password"
+            placeholder={t('password')}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="current-password"
@@ -241,7 +240,7 @@ function Auth({
               onClick={handleSignIn}
               disabled={working || !email || !password}
             >
-              Sign in
+              {t('signIn')}
             </button>
             <button
               className="ghost-button"
@@ -249,7 +248,7 @@ function Auth({
               onClick={handleSignUp}
               disabled={working || !email || !password}
             >
-              Create account
+              {t('createAccount')}
             </button>
           </div>
           {message ? <p className="auth-success">{message}</p> : null}

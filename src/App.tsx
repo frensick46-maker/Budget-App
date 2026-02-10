@@ -20,6 +20,194 @@ type BonusEntry = {
 
 type MonthlyExpenses = Record<string, IncomeItem[]>
 
+type Locale = 'en' | 'es'
+
+const translations = {
+  en: {
+    language: 'Language',
+    currency: 'Currency',
+    yearly: 'Yearly',
+    monthly: 'Monthly',
+    weekly: 'Weekly',
+    overview: 'Overview',
+    view: 'View',
+    dashboard: 'Dashboard',
+    income: 'Income',
+    fixedExpenses: 'Fixed Expenses',
+    remaining: 'Remaining',
+    viewIncomes: 'View incomes',
+    hideIncomes: 'Hide incomes',
+    viewBonuses: 'View bonuses',
+    hideBonuses: 'Hide bonuses',
+    viewExpenses: 'View expenses',
+    hideExpenses: 'Hide expenses',
+    addBonus: 'Add bonus',
+    incomeSubtextSuffix: 'paychecks, side gigs, bonuses',
+    fixedVariableSubtext: 'Fixed + variable expenses',
+    monthlyBonuses: 'Monthly Bonuses',
+    noBonuses: 'No bonuses added yet.',
+    monthlyBonus: 'Monthly bonus',
+    incomeSources: 'Income Sources',
+    addIncome: 'Add income',
+    remove: 'Remove',
+    fixedExpensesTitle: 'Fixed Expenses',
+    addExpense: 'Add expense',
+    variableExpenses: 'Variable Expenses',
+    addVariable: 'Add variable',
+    hideVariable: 'Hide variable',
+    details: 'Details',
+    addEntry: 'Add entry',
+    totalIncome: 'Total income',
+    snapshot: 'Snapshot',
+    viewAll: 'View all',
+    incomeSource: 'Income source',
+    fixedExpense: 'Fixed expense',
+    variableExpense: 'Variable expense',
+    viewLabel: 'View',
+    bonus: 'Bonus',
+    defaultPaycheck: 'Paycheck',
+    defaultSideGig: 'Side gig',
+    defaultRent: 'Rent',
+    defaultUtilities: 'Utilities',
+    newIncome: 'New income',
+    newExpense: 'New expense',
+    newVariable: 'New variable',
+    cloudSyncDisabled: 'Cloud sync disabled',
+    cloudSyncDisabledHint:
+      'Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env to enable sign-in.',
+    checkingSession: 'Checking session...',
+    signedIn: 'Signed in',
+    signOut: 'Sign out',
+    signInToSync: 'Sign in to sync',
+    signIn: 'Sign in',
+    hide: 'Hide',
+    createAccount: 'Create account',
+    email: 'Email',
+    password: 'Password',
+    setNewPassword: 'Set a new password',
+    newPassword: 'New password',
+    confirmNewPassword: 'Confirm new password',
+    setPassword: 'Set password',
+    passwordUpdated: 'Password updated.',
+    passwordTooShort: 'Password must be at least 6 characters.',
+    passwordMismatch: 'Passwords do not match.',
+    statusLoading: 'Loading cloud data...',
+    statusSaving: 'Saving changes...',
+    statusError: 'Sync error',
+    statusSaved: 'All changes saved',
+    syncError: 'Sync error',
+    checkEmailConfirm: 'Check your email to confirm the account.',
+  },
+  es: {
+    language: 'Idioma',
+    currency: 'Moneda',
+    yearly: 'Anual',
+    monthly: 'Mensual',
+    weekly: 'Semanal',
+    overview: 'Resumen',
+    view: 'Vista',
+    dashboard: 'Panel',
+    income: 'Ingresos',
+    fixedExpenses: 'Gastos fijos',
+    remaining: 'Restante',
+    viewIncomes: 'Ver ingresos',
+    hideIncomes: 'Ocultar ingresos',
+    viewBonuses: 'Ver bonos',
+    hideBonuses: 'Ocultar bonos',
+    viewExpenses: 'Ver gastos',
+    hideExpenses: 'Ocultar gastos',
+    addBonus: 'Agregar bono',
+    incomeSubtextSuffix: 'sueldos, trabajos extra, bonos',
+    fixedVariableSubtext: 'Gastos fijos + variables',
+    monthlyBonuses: 'Bonos mensuales',
+    noBonuses: 'Aun no hay bonos.',
+    monthlyBonus: 'Bono mensual',
+    incomeSources: 'Fuentes de ingreso',
+    addIncome: 'Agregar ingreso',
+    remove: 'Eliminar',
+    fixedExpensesTitle: 'Gastos fijos',
+    addExpense: 'Agregar gasto',
+    variableExpenses: 'Gastos variables',
+    addVariable: 'Agregar variable',
+    hideVariable: 'Ocultar variable',
+    details: 'Detalles',
+    addEntry: 'Agregar registro',
+    totalIncome: 'Ingreso total',
+    snapshot: 'Resumen',
+    viewAll: 'Ver todo',
+    incomeSource: 'Fuente de ingreso',
+    fixedExpense: 'Gasto fijo',
+    variableExpense: 'Gasto variable',
+    viewLabel: 'Ver',
+    bonus: 'Bono',
+    defaultPaycheck: 'Sueldo',
+    defaultSideGig: 'Trabajo extra',
+    defaultRent: 'Renta',
+    defaultUtilities: 'Servicios',
+    newIncome: 'Nuevo ingreso',
+    newExpense: 'Nuevo gasto',
+    newVariable: 'Nuevo variable',
+    cloudSyncDisabled: 'Sincronizacion desactivada',
+    cloudSyncDisabledHint:
+      'Agrega VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY a .env para activar el inicio de sesion.',
+    checkingSession: 'Revisando sesion...',
+    signedIn: 'Sesion iniciada',
+    signOut: 'Cerrar sesion',
+    signInToSync: 'Inicia sesion para sincronizar',
+    signIn: 'Iniciar sesion',
+    hide: 'Ocultar',
+    createAccount: 'Crear cuenta',
+    email: 'Correo',
+    password: 'Contrasena',
+    setNewPassword: 'Configura una nueva contrasena',
+    newPassword: 'Nueva contrasena',
+    confirmNewPassword: 'Confirmar contrasena',
+    setPassword: 'Guardar contrasena',
+    passwordUpdated: 'Contrasena actualizada.',
+    passwordTooShort: 'La contrasena debe tener al menos 6 caracteres.',
+    passwordMismatch: 'Las contrasenas no coinciden.',
+    statusLoading: 'Cargando datos en la nube...',
+    statusSaving: 'Guardando cambios...',
+    statusError: 'Error de sincronizacion',
+    statusSaved: 'Todos los cambios guardados',
+    syncError: 'Error de sincronizacion',
+    checkEmailConfirm: 'Revisa tu correo para confirmar la cuenta.',
+  },
+} as const
+
+type TranslationKey = keyof typeof translations.en
+
+const monthLabels: Record<Locale, Record<string, string>> = {
+  en: {
+    Jan: 'Jan',
+    Feb: 'Feb',
+    Mar: 'Mar',
+    Apr: 'Apr',
+    May: 'May',
+    Jun: 'Jun',
+    Jul: 'Jul',
+    Aug: 'Aug',
+    Sep: 'Sep',
+    Oct: 'Oct',
+    Nov: 'Nov',
+    Dec: 'Dec',
+  },
+  es: {
+    Jan: 'Ene',
+    Feb: 'Feb',
+    Mar: 'Mar',
+    Apr: 'Abr',
+    May: 'May',
+    Jun: 'Jun',
+    Jul: 'Jul',
+    Aug: 'Ago',
+    Sep: 'Sep',
+    Oct: 'Oct',
+    Nov: 'Nov',
+    Dec: 'Dic',
+  },
+}
+
 type StoredState = {
   incomes?: IncomeItem[]
   fixedExpenses?: IncomeItem[]
@@ -31,6 +219,7 @@ type StoredState = {
   activeMonth?: string
   showIncomePanel?: boolean
   showFixedExpensesPanel?: boolean
+  locale?: Locale
 }
 
 const loadStoredState = () => {
@@ -59,31 +248,35 @@ const normalizeItem = (item: Partial<IncomeItem>): IncomeItem => ({
     `${item.amountBaseUsd ?? 0}`,
 })
 
-const DEFAULT_INCOMES: IncomeItem[] = [
+const buildDefaultIncomes = (
+  translate: (key: string) => string
+): IncomeItem[] => [
   {
     id: 'income-1',
-    name: 'Paycheck',
+    name: translate('defaultPaycheck'),
     amountBaseUsd: 0,
     amountInput: '0',
   },
   {
     id: 'income-2',
-    name: 'Side gig',
+    name: translate('defaultSideGig'),
     amountBaseUsd: 0,
     amountInput: '0',
   },
 ]
 
-const DEFAULT_FIXED_EXPENSES: IncomeItem[] = [
+const buildDefaultFixedExpenses = (
+  translate: (key: string) => string
+): IncomeItem[] => [
   {
     id: 'expense-1',
-    name: 'Rent',
+    name: translate('defaultRent'),
     amountBaseUsd: 0,
     amountInput: '0',
   },
   {
     id: 'expense-2',
-    name: 'Utilities',
+    name: translate('defaultUtilities'),
     amountBaseUsd: 0,
     amountInput: '0',
   },
@@ -112,15 +305,32 @@ const normalizeMonthlyExpenses = (value?: MonthlyExpenses) => {
 
 function App() {
   const storedState = loadStoredState()
+  const [locale, setLocale] = useState<Locale>(storedState?.locale ?? 'en')
+  const t = useCallback(
+    (key: string) =>
+      translations[locale][key as TranslationKey] ??
+      translations.en[key as TranslationKey] ??
+      key,
+    [locale]
+  )
+  const monthLabel = useCallback(
+    (monthId: string) => monthLabels[locale][monthId] ?? monthId,
+    [locale]
+  )
+  const defaultIncomes = useMemo(() => buildDefaultIncomes(t), [t])
+  const defaultFixedExpenses = useMemo(
+    () => buildDefaultFixedExpenses(t),
+    [t]
+  )
   const [incomes, setIncomes] = useState<IncomeItem[]>(
     () =>
       storedState?.incomes?.map((item) => normalizeItem(item)) ??
-      DEFAULT_INCOMES
+      defaultIncomes
   )
   const [fixedExpenses, setFixedExpenses] = useState<IncomeItem[]>(
     () =>
       storedState?.fixedExpenses?.map((item) => normalizeItem(item)) ??
-      DEFAULT_FIXED_EXPENSES
+      defaultFixedExpenses
   )
   const [period, setPeriod] = useState<'monthly' | 'weekly' | 'yearly'>(
     storedState?.period ?? 'monthly'
@@ -178,7 +388,12 @@ function App() {
     currencies[0]
 
   const periodLabel =
-    period === 'monthly' ? 'Monthly' : period === 'weekly' ? 'Weekly' : 'Yearly'
+    period === 'monthly'
+      ? t('monthly')
+      : period === 'weekly'
+        ? t('weekly')
+        : t('yearly')
+  const incomeSubtext = `${periodLabel} ${t('incomeSubtextSuffix')}`
   const periodFactor =
     period === 'monthly' ? 1 : period === 'weekly' ? 1 / 4 : 12
 
@@ -247,6 +462,7 @@ function App() {
       activeMonth,
       showIncomePanel,
       showFixedExpensesPanel,
+      locale,
     }),
     [
       incomes,
@@ -259,19 +475,20 @@ function App() {
       activeMonth,
       showIncomePanel,
       showFixedExpensesPanel,
+      locale,
     ]
   )
 
   const resetToDefaults = useCallback(() => {
     skipNextSyncRef.current = true
-    setIncomes(DEFAULT_INCOMES.map((item) => ({ ...item })))
-    setFixedExpenses(DEFAULT_FIXED_EXPENSES.map((item) => ({ ...item })))
+    setIncomes(defaultIncomes.map((item) => ({ ...item })))
+    setFixedExpenses(defaultFixedExpenses.map((item) => ({ ...item })))
     setMonthlyBonuses({})
     setVariableExpensesByMonth({})
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem(STORAGE_KEY)
     }
-  }, [])
+  }, [defaultFixedExpenses, defaultIncomes])
 
   const applyStoredState = useCallback((state?: StoredState | null) => {
     if (!state) {
@@ -309,6 +526,9 @@ function App() {
     }
     if (typeof state.showFixedExpensesPanel === 'boolean') {
       setShowFixedExpensesPanel(state.showFixedExpensesPanel)
+    }
+    if (state.locale) {
+      setLocale(state.locale)
     }
   }, [isSupabaseConfigured])
 
@@ -607,7 +827,7 @@ function App() {
       ...prev,
       {
         id: `income-${Date.now()}-${Math.round(Math.random() * 1000)}`,
-        name: 'New income',
+        name: t('newIncome'),
         amountBaseUsd: 0,
         amountInput: '0',
       },
@@ -655,7 +875,7 @@ function App() {
       ...prev,
       {
         id: `expense-${Date.now()}-${Math.round(Math.random() * 1000)}`,
-        name: 'New expense',
+        name: t('newExpense'),
         amountBaseUsd: 0,
         amountInput: '0',
       },
@@ -721,7 +941,7 @@ function App() {
         ...(prev[month] ?? []),
         {
           id: `variable-${Date.now()}-${Math.round(Math.random() * 1000)}`,
-          name: 'New variable',
+          name: t('newVariable'),
           amountBaseUsd: 0,
           amountInput: '0',
         },
@@ -754,6 +974,9 @@ function App() {
   const isDashboard = activeTab === 'Dashboard'
   const isMonthView = !isDashboard
   const bonusInputOpen = isMonthView && showBonusInput[activeTab]
+  const activeTabLabel = isDashboard ? t('dashboard') : monthLabel(activeTab)
+  const formatBonusTitle = (label: string) =>
+    locale === 'es' ? `${t('bonus')} de ${label}` : `${label} ${t('bonus')}`
   const dashboardIncomeDisplay =
     period === 'yearly'
       ? formatCurrency(
@@ -811,8 +1034,8 @@ function App() {
       ? [
           {
             id: `bonus-${activeTab}`,
-            name: `${activeTab} Bonus`,
-            subtitle: 'Monthly bonus',
+            name: formatBonusTitle(activeTabLabel),
+            subtitle: t('monthlyBonus'),
             amount: `${activeBonus.amountBaseUsd < 0 ? '-' : '+'}${formatBonusAmount(
               Math.abs(activeBonus.amountBaseUsd)
             )}`,
@@ -824,7 +1047,7 @@ function App() {
     ...sortedIncomes.map((incomeItem) => ({
       id: incomeItem.id,
       name: incomeItem.name,
-      subtitle: 'Income source',
+      subtitle: t('incomeSource'),
       amount: formatSignedCurrency(convert(incomeItem.amountBaseUsd)),
       isPositive: true,
       sortValue: incomeItem.amountBaseUsd,
@@ -834,7 +1057,7 @@ function App() {
     ...sortedFixedExpenses.map((expenseItem) => ({
       id: expenseItem.id,
       name: expenseItem.name,
-      subtitle: 'Fixed expense',
+      subtitle: t('fixedExpense'),
       amount: formatSignedCurrency(convert(-expenseItem.amountBaseUsd)),
       isPositive: false,
       sortValue: expenseItem.amountBaseUsd,
@@ -842,7 +1065,7 @@ function App() {
     ...sortedVariableExpenses.map((expenseItem) => ({
       id: expenseItem.id,
       name: expenseItem.name,
-      subtitle: 'Variable expense',
+      subtitle: t('variableExpense'),
       amount: formatSignedCurrency(convert(-expenseItem.amountBaseUsd)),
       isPositive: false,
       sortValue: expenseItem.amountBaseUsd,
@@ -864,11 +1087,15 @@ function App() {
       <header className="top-bar">
         <div>
           <p className="eyebrow">Budget App</p>
-          <h1>{isDashboard ? `${periodLabel} Overview` : `${activeTab} View`}</h1>
+          <h1>
+            {isDashboard
+              ? `${periodLabel} ${t('overview')}`
+              : `${activeTabLabel} ${t('view')}`}
+          </h1>
           <div className="controls-row">
             <div className="currency-control">
               <label className="currency-label" htmlFor="currency">
-                Currency
+                {t('currency')}
               </label>
               <select
                 id="currency"
@@ -883,6 +1110,20 @@ function App() {
                 ))}
               </select>
             </div>
+            <div className="currency-control">
+              <label className="currency-label" htmlFor="language">
+                {t('language')}
+              </label>
+              <select
+                id="language"
+                className="currency-select"
+                value={locale}
+                onChange={(event) => setLocale(event.target.value as Locale)}
+              >
+                <option value="en">English</option>
+                <option value="es">Espanol</option>
+              </select>
+            </div>
             <div className="period-toggle">
               <button
                 className={`toggle-button ${
@@ -892,7 +1133,7 @@ function App() {
                 onClick={() => setPeriod('yearly')}
                 disabled={!isDashboard}
               >
-                Yearly
+                {t('yearly')}
               </button>
               <button
                 className={`toggle-button ${
@@ -902,7 +1143,7 @@ function App() {
                 onClick={() => setPeriod('monthly')}
                 disabled={!isDashboard}
               >
-                Monthly
+                {t('monthly')}
               </button>
               <button
                 className={`toggle-button ${
@@ -912,7 +1153,7 @@ function App() {
                 onClick={() => setPeriod('weekly')}
                 disabled={!isDashboard}
               >
-                Weekly
+                {t('weekly')}
               </button>
             </div>
           </div>
@@ -925,6 +1166,7 @@ function App() {
           syncError={syncError}
           isRecovery={isRecovery}
           onRecoveryComplete={handleRecoveryComplete}
+          t={t}
         />
       </header>
 
@@ -934,11 +1176,11 @@ function App() {
           type="button"
           onClick={() => setActiveTab('Dashboard')}
         >
-          Dashboard
+          {t('dashboard')}
         </button>
         <div className="month-select">
           <label className="month-label" htmlFor="month">
-            View
+            {t('viewLabel')}
           </label>
           <select
             id="month"
@@ -961,7 +1203,7 @@ function App() {
           >
             {monthTabs.map((tab) => (
               <option key={tab} value={tab}>
-                {tab} View
+                {monthLabel(tab)} {t('view')}
               </option>
             ))}
           </select>
@@ -973,7 +1215,7 @@ function App() {
           <section className="summary-grid">
             <div className="summary-card">
               <div className="summary-header">
-                <p className="summary-label">Income</p>
+                <p className="summary-label">{t('income')}</p>
                 <div className="summary-actions">
                   {isDashboard ? (
                     <button
@@ -981,7 +1223,7 @@ function App() {
                       type="button"
                       onClick={() => setShowIncomePanel((prev) => !prev)}
                     >
-                      {showIncomePanel ? 'Hide incomes' : 'View incomes'}
+                      {showIncomePanel ? t('hideIncomes') : t('viewIncomes')}
                     </button>
                   ) : (
                     <button
@@ -994,7 +1236,7 @@ function App() {
                         }))
                       }
                     >
-                      Add bonus
+                      {t('addBonus')}
                     </button>
                   )}
                   <button
@@ -1002,7 +1244,7 @@ function App() {
                     type="button"
                     onClick={() => setShowBonusList((prev) => !prev)}
                   >
-                    {showBonusList ? 'Hide bonuses' : 'View bonuses'}
+                    {showBonusList ? t('hideBonuses') : t('viewBonuses')}
                   </button>
                 </div>
               </div>
@@ -1021,34 +1263,32 @@ function App() {
                     }
                     onKeyDown={handleEnterBlur}
                     onBlur={() => handleBonusAmountBlur(activeTab)}
-                    aria-label={`${activeTab} bonus amount`}
+                    aria-label={`${activeTabLabel} ${t('bonus')}`}
                   />
                 </div>
               )}
-              <p className="summary-subtext">
-                {periodLabel} paychecks, side gigs, bonuses
-              </p>
+              <p className="summary-subtext">{incomeSubtext}</p>
             </div>
             <div className="summary-card">
               <div className="summary-header">
-                <p className="summary-label">Fixed Expenses</p>
+                <p className="summary-label">{t('fixedExpenses')}</p>
                 <button
                   className="ghost-button small"
                   type="button"
                   onClick={() => setShowFixedExpensesPanel((prev) => !prev)}
                 >
-                  {showFixedExpensesPanel ? 'Hide expenses' : 'View expenses'}
+                  {showFixedExpensesPanel
+                    ? t('hideExpenses')
+                    : t('viewExpenses')}
                 </button>
               </div>
               <p className="summary-value">
                 {dashboardExpensesDisplay}
               </p>
-              <p className="summary-subtext">
-                Fixed + variable expenses
-              </p>
+              <p className="summary-subtext">{t('fixedVariableSubtext')}</p>
             </div>
             <div className="summary-card highlight">
-              <p className="summary-label">Remaining</p>
+              <p className="summary-label">{t('remaining')}</p>
               <p className="summary-value">
                 {dashboardRemainingDisplay}
               </p>
@@ -1059,17 +1299,17 @@ function App() {
             {showBonusList && (
               <div className="panel">
                 <div className="panel-header">
-                  <h2>Monthly Bonuses</h2>
+                  <h2>{t('monthlyBonuses')}</h2>
                 </div>
                 {bonusList.length === 0 ? (
-                  <p className="summary-subtext">No bonuses added yet.</p>
+                  <p className="summary-subtext">{t('noBonuses')}</p>
                 ) : (
                   <ul className="list">
                     {bonusList.map((item) => (
                       <li className="list-row" key={item.month}>
                         <div>
-                          <p className="list-title">{item.month}</p>
-                          <p className="list-subtitle">Monthly bonus</p>
+                          <p className="list-title">{monthLabel(item.month)}</p>
+                          <p className="list-subtitle">{t('monthlyBonus')}</p>
                         </div>
                         <span className="amount positive">
                           {`${item.entry.amountBaseUsd < 0 ? '-' : '+'}${formatBonusAmount(
@@ -1085,13 +1325,13 @@ function App() {
             {showIncomePanel && (
               <div className="panel income-panel" dir="ltr">
                 <div className="panel-header">
-                  <h2>Income Sources</h2>
+                  <h2>{t('incomeSources')}</h2>
                   <button
                     className="ghost-button"
                     type="button"
                     onClick={handleAddIncome}
                   >
-                    Add income
+                    {t('addIncome')}
                   </button>
                 </div>
                 <div className="income-list">
@@ -1135,7 +1375,7 @@ function App() {
                         type="button"
                         onClick={() => handleRemoveIncome(incomeItem.id)}
                       >
-                        Remove
+                        {t('remove')}
                       </button>
                     </div>
                   ))}
@@ -1145,13 +1385,13 @@ function App() {
             {showFixedExpensesPanel && (
               <div className="panel" dir="ltr">
                 <div className="panel-header">
-                  <h2>Fixed Expenses</h2>
+                  <h2>{t('fixedExpensesTitle')}</h2>
                   <button
                     className="ghost-button"
                     type="button"
                     onClick={handleAddFixedExpense}
                   >
-                    Add expense
+                    {t('addExpense')}
                   </button>
                 </div>
                 <div className="income-list">
@@ -1197,7 +1437,7 @@ function App() {
                         type="button"
                         onClick={() => handleRemoveFixedExpense(expenseItem.id)}
                       >
-                        Remove
+                        {t('remove')}
                       </button>
                     </div>
                   ))}
@@ -1209,15 +1449,15 @@ function App() {
       ) : (
         <section className="panel month-panel">
           <div className="panel-header">
-            <h2>{activeTab} Details</h2>
+            <h2>{activeTabLabel} {t('details')}</h2>
             <button className="ghost-button" type="button" disabled>
-              Add entry
+              {t('addEntry')}
             </button>
           </div>
           <div className="month-grid">
             <div className="summary-card">
               <div className="summary-header">
-                <p className="summary-label">Income</p>
+                <p className="summary-label">{t('income')}</p>
                 <button
                   className="ghost-button small"
                   type="button"
@@ -1228,7 +1468,7 @@ function App() {
                     }))
                   }
                 >
-                  Add bonus
+                  {t('addBonus')}
                 </button>
               </div>
               <p className="summary-value">{monthIncomeTotalDisplay}</p>
@@ -1244,15 +1484,15 @@ function App() {
                     }
                     onKeyDown={handleBonusEnter(activeTab)}
                     onBlur={() => handleBonusAmountBlur(activeTab)}
-                    aria-label={`${activeTab} bonus amount`}
+                    aria-label={`${activeTabLabel} ${t('bonus')}`}
                   />
                 </div>
               )}
-              <p className="summary-subtext">Total income</p>
+              <p className="summary-subtext">{t('totalIncome')}</p>
             </div>
             <div className="summary-card">
               <div className="summary-header">
-                <p className="summary-label">Fixed Expenses</p>
+                <p className="summary-label">{t('fixedExpenses')}</p>
                 <button
                   className="ghost-button small"
                   type="button"
@@ -1264,28 +1504,28 @@ function App() {
                   }
                 >
                   {showVariableExpensesPanel[activeTab]
-                    ? 'Hide variable'
-                    : 'Add variable'}
+                    ? t('hideVariable')
+                    : t('addVariable')}
                 </button>
               </div>
               <p className="summary-value">{monthExpensesTotalDisplay}</p>
-              <p className="summary-subtext">Fixed + variable expenses</p>
+              <p className="summary-subtext">{t('fixedVariableSubtext')}</p>
             </div>
             <div className="summary-card highlight">
-              <p className="summary-label">Remaining</p>
+              <p className="summary-label">{t('remaining')}</p>
               <p className="summary-value">{monthRemainingDisplay}</p>
             </div>
           </div>
           {showVariableExpensesPanel[activeTab] && (
             <div className="panel" dir="ltr">
               <div className="panel-header">
-                <h2>Variable Expenses</h2>
+                <h2>{t('variableExpenses')}</h2>
                 <button
                   className="ghost-button"
                   type="button"
                   onClick={() => handleAddVariableExpense(activeTab)}
                 >
-                  Add variable
+                  {t('addVariable')}
                 </button>
               </div>
               <div className="income-list">
@@ -1336,7 +1576,7 @@ function App() {
                         handleRemoveVariableExpense(activeTab, expenseItem.id)
                       }
                     >
-                      Remove
+                      {t('remove')}
                     </button>
                   </div>
                 ))}
@@ -1345,9 +1585,9 @@ function App() {
           )}
           <div className="panel">
             <div className="panel-header">
-              <h2>{activeTab} Snapshot</h2>
+              <h2>{activeTabLabel} {t('snapshot')}</h2>
               <button className="ghost-button" type="button" disabled>
-                View all
+                {t('viewAll')}
               </button>
             </div>
             <ul className="list">
