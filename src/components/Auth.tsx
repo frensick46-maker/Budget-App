@@ -10,6 +10,8 @@ type AuthProps = {
   isConfigured: boolean
   syncStatus: SyncStatus
   syncError: string | null
+  isRecovery: boolean
+  onRecoveryComplete: () => void
 }
 
 const statusLabel = (status: SyncStatus) => {
@@ -31,9 +33,13 @@ function Auth({
   isConfigured,
   syncStatus,
   syncError,
+  isRecovery,
+  onRecoveryComplete,
 }: AuthProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
   const [authError, setAuthError] = useState('')
   const [working, setWorking] = useState(false)
@@ -80,6 +86,35 @@ function Auth({
     setWorking(false)
   }
 
+  const handlePasswordUpdate = async () => {
+    setWorking(true)
+    setMessage('')
+    setAuthError('')
+    if (newPassword.length < 6) {
+      setAuthError('Password must be at least 6 characters.')
+      setWorking(false)
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setAuthError('Passwords do not match.')
+      setWorking(false)
+      return
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    })
+    if (error) {
+      setAuthError(error.message)
+    } else {
+      setMessage('Password updated.')
+      setNewPassword('')
+      setConfirmPassword('')
+      onRecoveryComplete()
+    }
+    setWorking(false)
+  }
+
   if (!isConfigured) {
     return (
       <div className="auth-panel">
@@ -96,6 +131,52 @@ function Auth({
     return (
       <div className="auth-panel">
         <p className="auth-title">Checking session...</p>
+      </div>
+    )
+  }
+
+  if (isRecovery) {
+    return (
+      <div className="auth-panel">
+        <p className="auth-title">Set a new password</p>
+        <div className="auth-form">
+          <input
+            className="auth-input"
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={(event) => setNewPassword(event.target.value)}
+            autoComplete="new-password"
+          />
+          <input
+            className="auth-input"
+            type="password"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            autoComplete="new-password"
+          />
+          <div className="auth-actions">
+            <button
+              className="primary-button"
+              type="button"
+              onClick={handlePasswordUpdate}
+              disabled={working || !newPassword || !confirmPassword}
+            >
+              Set password
+            </button>
+            <button
+              className="ghost-button"
+              type="button"
+              onClick={handleSignOut}
+              disabled={working}
+            >
+              Sign out
+            </button>
+          </div>
+          {message ? <p className="auth-success">{message}</p> : null}
+          {authError ? <p className="auth-error">{authError}</p> : null}
+        </div>
       </div>
     )
   }

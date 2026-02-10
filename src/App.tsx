@@ -152,6 +152,7 @@ function App() {
     Record<string, boolean>
   >({})
   const [session, setSession] = useState<Session | null>(null)
+  const [isRecovery, setIsRecovery] = useState(false)
   const [authLoading, setAuthLoading] = useState(true)
   const [syncStatus, setSyncStatus] = useState<
     'idle' | 'loading' | 'saving' | 'error'
@@ -328,14 +329,24 @@ function App() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession)
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsRecovery(true)
+      }
+      if (event === 'SIGNED_OUT') {
+        setIsRecovery(false)
+      }
     })
 
     return () => {
       isMounted = false
       subscription.unsubscribe()
     }
+  }, [])
+
+  const handleRecoveryComplete = useCallback(() => {
+    setIsRecovery(false)
   }, [])
 
   useEffect(() => {
@@ -912,6 +923,8 @@ function App() {
           isConfigured={isSupabaseConfigured}
           syncStatus={syncStatus}
           syncError={syncError}
+          isRecovery={isRecovery}
+          onRecoveryComplete={handleRecoveryComplete}
         />
       </header>
 
