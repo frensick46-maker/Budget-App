@@ -88,14 +88,14 @@ function App() {
         {
           id: 'income-1',
           name: 'Paycheck',
-          amountBaseUsd: 2600,
-          amountInput: '2600',
+          amountBaseUsd: 0,
+          amountInput: '0',
         },
         {
           id: 'income-2',
           name: 'Side gig',
-          amountBaseUsd: 600,
-          amountInput: '600',
+          amountBaseUsd: 0,
+          amountInput: '0',
         },
       ]
   )
@@ -105,14 +105,14 @@ function App() {
         {
           id: 'expense-1',
           name: 'Rent',
-          amountBaseUsd: 900,
-          amountInput: '900',
+          amountBaseUsd: 0,
+          amountInput: '0',
         },
         {
           id: 'expense-2',
           name: 'Utilities',
-          amountBaseUsd: 120,
-          amountInput: '120',
+          amountBaseUsd: 0,
+          amountInput: '0',
         },
       ]
   )

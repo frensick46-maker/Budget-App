@@ -14,7 +14,7 @@ alwaysApply: true
 - Work in small steps; after each step, update this brief with progress.
 
 # Current Status
-- Latest step: Collapsed sign-in form behind a button
+- Latest step: Zeroed default amounts for new users
 - Next step: Decide next feature for budgeting flow
 
 # Decisions
