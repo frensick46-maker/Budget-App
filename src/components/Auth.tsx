@@ -37,6 +37,7 @@ function Auth({
   const [message, setMessage] = useState('')
   const [authError, setAuthError] = useState('')
   const [working, setWorking] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
   const handleSignIn = async () => {
     setWorking(true)
@@ -123,43 +124,59 @@ function Auth({
 
   return (
     <div className="auth-panel">
-      <p className="auth-title">Sign in to sync</p>
-      <input
-        className="auth-input"
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        autoComplete="email"
-      />
-      <input
-        className="auth-input"
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        autoComplete="current-password"
-      />
-      <div className="auth-actions">
+      <div className="auth-toggle-row">
+        <p className="auth-title">Sign in to sync</p>
         <button
-          className="primary-button"
+          className="ghost-button small"
           type="button"
-          onClick={handleSignIn}
-          disabled={working || !email || !password}
+          onClick={() => setShowForm((prev) => !prev)}
+          disabled={working}
         >
-          Sign in
-        </button>
-        <button
-          className="ghost-button"
-          type="button"
-          onClick={handleSignUp}
-          disabled={working || !email || !password}
-        >
-          Create account
+          {showForm ? 'Hide' : 'Sign in'}
         </button>
       </div>
-      {message ? <p className="auth-success">{message}</p> : null}
-      {authError ? <p className="auth-error">{authError}</p> : null}
+      {showForm ? (
+        <div className="auth-form">
+          <input
+            className="auth-input"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            autoComplete="email"
+          />
+          <input
+            className="auth-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            autoComplete="current-password"
+          />
+          <div className="auth-actions">
+            <button
+              className="primary-button"
+              type="button"
+              onClick={handleSignIn}
+              disabled={working || !email || !password}
+            >
+              Sign in
+            </button>
+            <button
+              className="ghost-button"
+              type="button"
+              onClick={handleSignUp}
+              disabled={working || !email || !password}
+            >
+              Create account
+            </button>
+          </div>
+          {message ? <p className="auth-success">{message}</p> : null}
+          {authError ? <p className="auth-error">{authError}</p> : null}
+        </div>
+      ) : (
+        <p className="auth-meta">Sign in to keep your budget synced.</p>
+      )}
     </div>
   )
 }

@@ -523,6 +523,19 @@
   gap: 8px;
 }
 
+.auth-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .auth-meta {
   margin: 0;
   font-size: 0.8rem;
