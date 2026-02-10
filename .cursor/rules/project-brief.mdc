@@ -1,0 +1,22 @@
+---
+description: Project brief and collaboration rules
+alwaysApply: true
+---
+
+# Project Brief (Living Doc)
+- This app: Budgeting app
+- Target users: Personal budgeters (solo users)
+- Core goals v1: Basic budget overview and simple expense tracking
+- Tech: React + TypeScript + Vite
+
+# Collaboration
+- User describes desired behavior and changes; assistant implements most code.
+- Work in small steps; after each step, update this brief with progress.
+
+# Current Status
+- Latest step: Added Supabase email auth and cloud sync support
+- Next step: Decide next feature for budgeting flow
+
+# Decisions
+- 2026-02-08: Start small and grow over time
+- 2026-02-08: Renamed project to "Budget App"

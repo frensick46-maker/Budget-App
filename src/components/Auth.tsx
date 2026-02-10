@@ -1,0 +1,167 @@
+import { useState } from 'react'
+import type { Session } from '@supabase/supabase-js'
+import { supabase } from '../lib/supabaseClient'
+
+type SyncStatus = 'idle' | 'loading' | 'saving' | 'error'
+
+type AuthProps = {
+  session: Session | null
+  loading: boolean
+  isConfigured: boolean
+  syncStatus: SyncStatus
+  syncError: string | null
+}
+
+const statusLabel = (status: SyncStatus) => {
+  if (status === 'loading') {
+    return 'Loading cloud data...'
+  }
+  if (status === 'saving') {
+    return 'Saving changes...'
+  }
+  if (status === 'error') {
+    return 'Sync error'
+  }
+  return 'All changes saved'
+}
+
+function Auth({
+  session,
+  loading,
+  isConfigured,
+  syncStatus,
+  syncError,
+}: AuthProps) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
+  const [authError, setAuthError] = useState('')
+  const [working, setWorking] = useState(false)
+
+  const handleSignIn = async () => {
+    setWorking(true)
+    setMessage('')
+    setAuthError('')
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) {
+      setAuthError(error.message)
+    }
+    setWorking(false)
+  }
+
+  const handleSignUp = async () => {
+    setWorking(true)
+    setMessage('')
+    setAuthError('')
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+    if (error) {
+      setAuthError(error.message)
+    } else {
+      setMessage('Check your email to confirm the account.')
+    }
+    setWorking(false)
+  }
+
+  const handleSignOut = async () => {
+    setWorking(true)
+    setMessage('')
+    setAuthError('')
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      setAuthError(error.message)
+    }
+    setWorking(false)
+  }
+
+  if (!isConfigured) {
+    return (
+      <div className="auth-panel">
+        <p className="auth-title">Cloud sync disabled</p>
+        <p className="auth-meta">
+          Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env to enable
+          sign-in.
+        </p>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="auth-panel">
+        <p className="auth-title">Checking session...</p>
+      </div>
+    )
+  }
+
+  if (session) {
+    return (
+      <div className="auth-panel">
+        <p className="auth-title">Signed in</p>
+        <p className="auth-meta">{session.user.email}</p>
+        <p className="auth-meta">{statusLabel(syncStatus)}</p>
+        {syncStatus === 'error' && syncError ? (
+          <p className="auth-error">{syncError}</p>
+        ) : null}
+        {authError ? <p className="auth-error">{authError}</p> : null}
+        <button
+          className="ghost-button small"
+          type="button"
+          onClick={handleSignOut}
+          disabled={working}
+        >
+          Sign out
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="auth-panel">
+      <p className="auth-title">Sign in to sync</p>
+      <input
+        className="auth-input"
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        autoComplete="email"
+      />
+      <input
+        className="auth-input"
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        autoComplete="current-password"
+      />
+      <div className="auth-actions">
+        <button
+          className="primary-button"
+          type="button"
+          onClick={handleSignIn}
+          disabled={working || !email || !password}
+        >
+          Sign in
+        </button>
+        <button
+          className="ghost-button"
+          type="button"
+          onClick={handleSignUp}
+          disabled={working || !email || !password}
+        >
+          Create account
+        </button>
+      </div>
+      {message ? <p className="auth-success">{message}</p> : null}
+      {authError ? <p className="auth-error">{authError}</p> : null}
+    </div>
+  )
+}
+
+export default Auth
